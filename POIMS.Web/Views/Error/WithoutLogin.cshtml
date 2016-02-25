@@ -1,0 +1,48 @@
+﻿@using DNRPS.POIMS.CommonResources
+@{
+    Layout = null;
+}
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>@string.Format(@Resources.WebPages.TitleFormat_Arg0Title, @Resources.WebPages.Error)</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    @Styles.Render("~/Content/css")
+</head>
+<body>
+    <div id="wrapper">
+        <div id="header">
+            <div class="hd-top">
+                <div class="logo">
+                    <a href='@Url.Action("Index", "Home")'>
+                        <img src="@Url.Content("~/Images/logo-poims.png")" alt="POIMS" />
+                    </a><span class="logo-txt">@Resources.WebPages.ApplicationName</span>
+                </div>
+                <div class="user_info">
+                </div>
+            </div>
+        </div>
+        <div id="body">
+            <div class="form_field">
+                <div class="titlebg">
+                    <h2>@Resources.WebPages.Error</h2>
+                </div>
+                <div>
+                    <table style="width:100%;border:0" cellspacing="4" cellpadding="4">
+                        <tbody>
+                            <tr>
+                                <td valign="top" class="errorMessage">
+                                    @Html.Raw(Errors.HtmlGenericErrorMessage)
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        @Html.Partial("_Footer")
+    </div>
+</body>
+</html>

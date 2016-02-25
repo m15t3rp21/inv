@@ -1,0 +1,24 @@
+﻿@model MvcSiteMapProvider.Web.Html.Models.SiteMapPathHelperModel
+@using System.Web.Mvc.Html
+@using System.Linq
+@using MvcSiteMapProvider.Web.Html.Models
+@foreach (var node in Model)
+{
+    if (node == Model.Last())
+    {
+        <text><b>@node.Title</b></text>
+    }
+    else
+    {
+        if (node.IsClickable)
+        {
+            <a href='@Url.Action(node.Action, node.Controller)' title='@node.Description'>@node.Title</a>
+        }
+        else
+        {
+            <text>@node.Title</text>
+        }
+        <text> &gt; </text>
+    }
+}
+@*@Html.DisplayFor(m => node);*@
