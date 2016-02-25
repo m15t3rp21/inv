@@ -91,18 +91,18 @@
     </Reference>
     <Reference Include="POIMS.Business, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\POIMS.Business.dll</HintPath>
+      <HintPath>..\lib\POIMS.Business.dll</HintPath>
     </Reference>
     <Reference Include="POIMS.Data, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\POIMS.Data.dll</HintPath>
+      <HintPath>..\lib\POIMS.Data.dll</HintPath>
     </Reference>
     <Reference Include="POIMS.SSO_SAC_Service.Client.BusinessLayer">
       <HintPath>..\lib\DNRIFW\POIMS.SSO_SAC_Service.Client.BusinessLayer.dll</HintPath>
     </Reference>
     <Reference Include="POIMS.Workflow, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\POIMS.Workflow.dll</HintPath>
+      <HintPath>..\lib\POIMS.Workflow.dll</HintPath>
     </Reference>
     <Reference Include="SSO_SAC_Service.Client.BusinessLayer">
       <HintPath>..\lib\DNRIFW\SSO_SAC_Service.Client.BusinessLayer.dll</HintPath>
