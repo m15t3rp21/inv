@@ -1,0 +1,76 @@
+﻿@using DNRPS.POIMS.CommonResources
+@using MvcSiteMapProvider.Web.Html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/kendo/2016.1.112/kendo.common.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/kendo/2016.1.112/kendo.mobile.all.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/kendo/2016.1.112/kendo.dataviz.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/kendo/2016.1.112/kendo.silver.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/kendo/2016.1.112/kendo.dataviz.silver.min.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/kendo/2016.1.112/jquery.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/kendo/2016.1.112/jszip.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/kendo/2016.1.112/kendo.all.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/kendo/2016.1.112/kendo.aspnetmvc.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/kendo.modernizr.custom.js")"></script>
+</head>
+<body>
+    <header>
+        <div id="header">
+            <div class="hd-top">
+                <div class="logo">
+                    <a href="@Url.Action("Index", "Home")">
+                        <img src="@Url.Content("~/Images/logo-poims.png")" alt="POIMS" />
+                    </a><span class="logo-txt">@Resources.WebPages.ApplicationName</span>
+                </div>
+                <div class="user_info">
+                    <table border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                            <td class="wel-txt">Welcome, <span id="userName">@*@Html.Raw(DNRPS.POIMS.Web.Controllers.BaseController.WelcomeMessageRawHtml)*@</span></td>
+                            <td>
+                                <a href="javascript:void(0);" class="user-acc" id="lnkMyAccount" title="@Names.MyAccount"></a>
+                                <a href='@Url.Action("Logout", "Membership")' title="@Names.Logout" class="logout"></a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            @Html.MvcSiteMap().Menu(true)
+            <div class="breadcrumb">
+                @Html.MvcSiteMap().SiteMapPath()
+            </div>
+        </div>
+    </header>
+    <div id="body">
+        @RenderSection("featured", required: false)
+        <section class="content-wrapper main-content clear-fix">
+            @RenderBody()
+        </section>
+    </div>
+    @Html.Partial("_Footer")
+    <div id="divOverlay" class="overlay" style="display: none;">
+        <div id="divLoading" class="loader">
+            @Names.HtmlLoadingInProgress
+        </div>
+    </div>
+    @Html.Raw(ViewBag.openPopup)
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#lnkMyAccount').on('click', function () {
+                var width = 1000;
+                var height = 800;
+                var left = parseInt((screen.availWidth / 2) - (width / 2));
+                var top = parseInt((screen.availHeight / 2) - (height / 2));
+                var windowFeatures = "width=" + width + ",height=" + height +
+                    ",status,resizable,left=" + left + ",top=" + top +
+                    ",screenX=" + left + ",screenY=" + top + ",scrollbars=yes";
+                var url = '@Url.Content("~/Membership/MyAccount")';
+                var popup = window.open(url, "_blank", windowFeatures, "MyAccount");
+                return false;
+            });
+        });
+    </script>
+</body>
+</html>

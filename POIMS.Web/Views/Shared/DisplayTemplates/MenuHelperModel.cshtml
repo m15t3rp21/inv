@@ -1,0 +1,90 @@
+﻿@model MvcSiteMapProvider.Web.Html.Models.MenuHelperModel
+@using MvcSiteMapProvider.Web.Html
+@using MvcSiteMapProvider.Web.Html.Models
+<nav>
+    @(Html.Kendo().Menu().Name("kMenu")
+    .BindTo(Model.Nodes, mappings =>
+    {
+        mappings.For<SiteMapNodeModel>(binding =>
+        binding.ItemDataBound((item, node) =>
+        {
+            item.Text = node.Title;
+            if (node.IsClickable)
+            {
+                item.ActionName = node.Action;
+                item.ControllerName = node.Controller;
+                item.HtmlAttributes["title"] = node.Description;
+            }
+            else
+            {
+                item.ActionName = item.ControllerName = string.Empty;
+                item.HtmlAttributes["style"] = "cursor:default";
+            }
+        }).Children(parent => parent.Children));
+    }))
+    @*
+
+        <!--NOTE: The below menu template now only supports up to three levels of nesting-->
+            <ul id="nav">
+                    @foreach (var node in Model.Nodes)
+                        {
+                        <li class="top">
+                            @if (node.IsClickable)
+                            {
+                                <a href='@Url.Action(node.Action, node.Controller)' class="nav_link" title='@node.Description'>@node.Title</a>
+                            }
+                            else
+                            {
+                                <a href="javascript:void(0);" onclick="return false;" class="nav_link">@node.Title</a>
+                            }
+
+                            @if (node.Children.Any())
+                            {
+                                <ul class="sub" style="width:200px;">
+                                    @foreach (var child in node.Children)
+                                    {
+                                        <li>
+                                            @if (child.Children.Any())
+                                            {
+                                                if (node.IsClickable)
+                                                {
+                                                    <a href='@Url.Action(child.Action, child.Controller)' title='@child.Description' class="fly">@child.Title</a>
+                                                }
+                                                else
+                                                {
+                                                    <a href="javascript:void(0);" onclick="return false;" class="fly">@child.Title</a>
+                                                }
+
+                                                foreach (var grandchild in child.Children)
+                                                {
+                                                    <ul>
+                                                        <li>
+                                                            <a href='@Url.Action(grandchild.Action, grandchild.Controller)' title='@grandchild.Description'>@grandchild.Title</a>
+                                                        </li>
+                                                    </ul>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <a href='@Url.Action(child.Action, child.Controller)' title='@child.Description'>@child.Title</a>
+                                            }
+                                        </li>
+                                    }
+                                </ul>
+                            }
+                        </li>
+                    }
+                </ul>
+                <ul id="menu">
+                        @foreach (var node in Model.Nodes)
+                            {
+                            <li>
+                                @Html.DisplayFor(m => node)
+                                @if (node.Children.Any())
+                                {
+                                    @Html.DisplayFor(m => node.Children)
+                                }
+                            </li>
+                        }
+                    </ul>*@
+</nav>

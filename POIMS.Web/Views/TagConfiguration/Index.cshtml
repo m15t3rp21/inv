@@ -1,0 +1,73 @@
+﻿@using DNRPS.POIMS.CommonResources;
+@using DNRPS.POIMS.CommonResources.Models;
+@using DNRPS.POIMS.Web.Models;
+@model DNRPS.POIMS.CommonResources.Models.TagConfigurationModel
+
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div >
+    <div>
+        <h2>@Names.TagConfiguration</h2>
+    </div>
+    <div class="" >
+
+        @(Html.Kendo().Grid<DNRPS.POIMS.CommonResources.Models.TagConfigurationModel>()
+                .Name("grid")
+                .Columns(columns =>
+                {
+                    columns.Bound(c => c.TagName).ClientTemplate(
+                            @"<div class='tagType-image'
+                                style='background-image: url(../../content/web/Customers/#:data.CustomerID#.jpg);'></div>
+                            <div class='tank-name'>#: TagName #</div>")
+                      .Width(240);
+                    columns.Bound(c => c.TagDescription);
+                    columns.Bound(c => c.TagKey);
+                })
+                .HtmlAttributes(new { style = "height: 550px;" })
+                .ToolBar(tools => tools.Excel())
+                .Scrollable()
+                .Groupable()
+                .Sortable()
+                .Excel(excel => excel
+                    .FileName("TagsExport.xlsx")
+                    .Filterable(true)
+                    .ProxyURL(Url.Action("Excel_Export_Save", "Grid"))
+                )
+                .Pageable(pageable => pageable
+                    .Refresh(true)
+                    .PageSizes(true)
+                    .ButtonCount(5))
+                .DataSource(dataSource => dataSource
+                    .Ajax()
+                    .Read(read => read.Action("TagsData_Read", "TagConfiguration"))
+                    .PageSize(20)
+                )
+        )
+
+        <style>
+            .tagType-image {
+                display: inline-block;
+                width: 32px;
+                height: 32px;
+                border-radius: 50%;
+                background-size: 32px 35px;
+                background-position: center center;
+                vertical-align: middle;
+                line-height: 32px;
+                box-shadow: inset 0 0 1px #999, inset 0 0 10px rgba(0,0,0,.2);
+                margin-left: 5px;
+            }
+
+            .tank-name {
+                display: inline-block;
+                vertical-align: middle;
+                line-height: 32px;
+                padding-left: 3px;
+            }
+        </style>
+    </div>
+</div>
+

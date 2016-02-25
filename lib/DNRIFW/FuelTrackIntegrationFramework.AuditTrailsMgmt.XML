@@ -1,0 +1,189 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>FuelTrackIntegrationFramework.AuditTrailsMgmt</name>
+    </assembly>
+    <members>
+        <member name="T:FuelTrackIntegrationFramework.AuditTrailsMgmt.AuditTrailArchiveManager">
+            <summary>
+            Utility Class for Managing AuditTrail Archives
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:FuelTrackIntegrationFramework.AuditTrailsMgmt.AuditTrailArchiveManager.GetURLToViewAuditTrailArchive(System.Int32,System.Boolean,System.String,System.String@,System.String@)" -->
+        <member name="M:FuelTrackIntegrationFramework.AuditTrailsMgmt.AuditTrailArchiveManager.GetAuditTrailsCountForArchive(System.Int32)">
+            <summary>
+            Gets the Count of AuditTrail Records in a Specific AuditTrail Archive
+            
+            !!Throws Exception on Error!! 
+            Possible Exception Codes:
+                UNKNOWN_ARCHIVE 
+            </summary>
+            <param name="ArchiveKEY"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FuelTrackIntegrationFramework.AuditTrailsMgmt.AuditTrailArchiveManager.GetArchiveKEY(System.String,System.String)">
+            <summary>
+             Obtain the ArchiveKEY of an AuditTrail Archive for a specific System and Reference Record No
+            
+            !!Throws Exception on Error!! 
+             Possible Exception Code:
+                AUDITTRAIL_ARCHIVE_NOT_FOUND
+            </summary>
+            <param name="SystemCode"></param>
+            <param name="RefRecordNo">Eg. Asset ID, WorkOrder ID etc.</param>
+            <returns></returns>
+        </member>
+        <member name="M:FuelTrackIntegrationFramework.AuditTrailsMgmt.AuditTrailArchiveManager.CreateAuditTrailArchive(System.String,System.Int32,System.String,System.String)">
+            <summary>
+            Creates a new Record-Specific AuditTrail Archive
+            [TRANSACTION IS MANDATORY]
+            This function is required to be executed within an ambient TransactionScope
+            
+            !!Throws Exception on Error!! 
+            Possible Exception Codes:
+                UNKNOWN_SYSTEMCODE
+                UNKNOWN_SITEKEY
+                UNEXPECTED_DATABASE_ERROR 
+            </summary>
+            <param name="SystemCode"></param>
+            <param name="SiteKEY"></param>
+            <param name="ArchiveID">Optional Display ID for the AuditTrail Archive. It will be used as the title of the AuditTrail Archive WebPage</param>
+            <param name="RefRecordNo">Unique Identifier of the Application-Specific Record that requires a dedicated AuditTrail Archive to be created for storing record-specific AuditTrails, eg. Asset ID, WorkOrder ID etc</param>
+            <returns>
+            Returns the ArchiveKEY of the newly generated AuditTrailArchive on Success
+            </returns>
+        </member>
+        <member name="M:FuelTrackIntegrationFramework.AuditTrailsMgmt.AuditTrailArchiveManager.ModifyAuditTrailArchiveIDAndRecordNo(System.Int32,System.String,System.String,System.String)">
+            <summary>
+            Modify the reference RecordNo and AuditTrailArchiveID for a specific AuditTrailArchive
+            
+            [TRANSACTION IS MANDATORY]
+            This function is required to be executed within an ambient TransactionScope
+            
+            !!Throws Exception on Error!!  
+            Possible Exception Code:
+                SYSTEMWIDE_AUDITTRAIL_ARCHIVE_CANNOT_BE_DELETED
+                UNABLE_TO_LOCATE_AUDITTRAIL_ARCHIVE_FOR_MODIFICATION
+            </summary>
+            <param name="ArchiveKEY">The Unique Identifier of the Target AuditTrail Archive</param>
+            <param name="refSystemCode">Eg. AST-MNT-MGT, MAT-MGT or MAT-PRC-MGT</param>
+            <param name="NewArchiveID">Renamed Display ID for the AuditTrail Archive. It will be used as the title of the AuditTrail Archive WebPage</param>
+            <param name="NewRecordNo">Renamed Unique Identifier of the Application-Specific Record that requires a dedicated AuditTrail Archive to be created for storing record-specific AuditTrails, eg. Asset ID, WorkOrder ID etc</param>
+        </member>
+        <member name="M:FuelTrackIntegrationFramework.AuditTrailsMgmt.AuditTrailArchiveManager.DeleteAuditTrailArchive(System.String,System.Int32,System.String)">
+            <summary>
+            Deletes a record-specific AuditTrail Archive when its no longer required.
+            Cascade delete all the contained AuditTrail Records.
+            
+            This operation requires 3 different Unique Identifiers to be specified to reduce the risk of accidentally deleting the wrong AuditTrailArchive. 
+            
+            [TRANSACTION IS MANDATORY]
+            This function is required to be executed within an ambient TransactionScope
+            
+            !!Throws Exception on Error!! 
+            Possible Exception Codes:
+                SYSTEMWIDE_AUDITTRAIL_ARCHIVE_CANNOT_BE_DELETED
+                UNABLE_TO_LOCATE_AUDITTRAIL_ARCHIVE_FOR_DELETION 
+            </summary>
+            <param name="SystemCode"></param>
+            <param name="ArchiveKEY">The Unique Identifier of the Target AuditTrail Archive</param>
+            <param name="RefRecordNo">The Unique Identifier of the Application-Specific Record that is linked to the target AuditTrail Archive, eg. Asset ID, WorkOrder ID etc</param>
+        </member>
+        <member name="M:FuelTrackIntegrationFramework.AuditTrailsMgmt.AuditTrailArchiveManager.InsertAuditTrailRecord(System.String,System.Int32,System.String,System.String,System.String,FuelTrackIntegrationFramework.AuditTrailsMgmt.eAuditTrailRecordType,FuelTrackIntegrationFramework.AuditTrailsMgmt.eAuditTrailSeverity)">
+            <summary>
+            Insert a new SYSTEM-GENERATED AuditTrail Record into a specific AuditTrail Archive. (User Signature and Remarks are not required)
+            
+            [TRANSACTION IS MANDATORY]
+            This function is required to be executed within an ambient TransactionScope
+            
+            !!Throws Exception on Error!! 
+            Possible Exception Code:
+                SUCCESS,
+                UNKNOWN_ARCHIVE,
+                UNKNOWN_CATEGORY_FOR_SPECIFIC_SUBSYSTEM,
+                UNEXPECTED_DATABASE_ERROR
+            </summary>
+            <param name="SystemCode">The Unique Identifier of the Requesting Application</param>
+            <param name="ArchiveKEY">The Unique Identifier of the Target AuditTrail Archive</param>
+            <param name="AuditTrailCategoryName">CategoryName of the AuditTrailCatogory for AuditTrail Record</param>
+            <param name="AuditTrailTitle">Title of AuditTrail Record</param>
+            <param name="AuditTrailDetails">Details of Event/Action recorded by AuditTrail Record</param>
+            <param name="Type">The Type of AuditTrail Record</param>
+            <param name="EventSeverity">The Severity of the Event/Action recorded by AuditTrail Record</param>
+            <returns>
+            Returns the Current Count of AuditTrail Records in the target AuditTrailArchive
+            </returns>
+        </member>
+        <member name="M:FuelTrackIntegrationFramework.AuditTrailsMgmt.AuditTrailArchiveManager.InsertAuditTrailRecord(System.String,System.Int32,System.String,System.String,System.String,FuelTrackIntegrationFramework.AuditTrailsMgmt.eAuditTrailRecordType,FuelTrackIntegrationFramework.AuditTrailsMgmt.eAuditTrailSeverity,System.String,System.String)">
+            <summary>
+            Insert a new AuditTrail Record, for recording specific User-Actions, into a specific AuditTrail Archive.
+            
+            [TRANSACTION IS MANDATORY]
+            This function is required to be executed within an ambient TransactionScope
+            
+            !!Throws Exception on Error!! 
+            Possible Exception Code:
+                SUCCESS,
+                UNKNOWN_ARCHIVE,
+                UNKNOWN_CATEGORY_FOR_SPECIFIC_SUBSYSTEM,
+                UNEXPECTED_DATABASE_ERROR
+            </summary>
+            <param name="SystemCode">The Unique Identifier of the Requesting Application</param>
+            <param name="ArchiveKEY">The Unique Identifier of the Target AuditTrail Archive</param>
+            <param name="AuditTrailCategoryName">CategoryName of the AuditTrailCatogory for AuditTrail Record</param>
+            <param name="AuditTrailTitle">Title of AuditTrail Record</param>
+            <param name="AuditTrailDetails">Details of Event/Action recorded by AuditTrail Record</param>
+            <param name="Type">The Type of AuditTrail Record</param>
+            <param name="EventSeverity">The Severity of the Event/Action recorded by AuditTrail Record</param>
+            <param name="UserSignature">Signature of the User who performed the action(s) that is being recorded in AuditTrailRecord</param>
+            <param name="UserRemarks">User Remarks</param>
+            <returns>
+            Returns the Current Count of AuditTrail Records in the target AuditTrailArchive
+            </returns>
+        </member>
+        <member name="M:FuelTrackIntegrationFramework.AuditTrailsMgmt.AuditTrailArchiveManager.GetSupportedSitesDictionary">
+            <summary>
+            Gets Dictionary containing all the existing Sites configured for the AuditTrails Mgmt System
+            KEY: SiteName
+            Value: Site object
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FuelTrackIntegrationFramework.AuditTrailsMgmt.AuditTrailArchiveManager.GetSupportedApplications">
+            <summary>
+            Dictionary of all Applications supported by the AuditTrails Mgmt System
+            
+            KEY: SysCode
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FuelTrackIntegrationFramework.AuditTrailsMgmt.AuditTrailArchiveManager.GetAuditTrailCategories(System.String)">
+            <summary>
+            Obtain a list of Configured AuditTrail Categories for a Supported Application
+            
+            !!Throws Exception on Error!! 
+            Possible Exception Codes:
+            UNKNOWN_SYSTEMCODE
+            NO_AT_CATEGORIES_DEFINED_FOR_SPECIFIC_SYSTEM
+            </summary>
+            <param name="SystemCode"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FuelTrackIntegrationFramework.AuditTrailsMgmt.AuditTrailArchiveManager.GetApplicationLevelAuditTrailKEYs(System.String)">
+            <summary>
+            Obtain Dictionary of pre-configured Application-Level AuditTrail KEYS for a Supported Application
+            
+            KEY: SiteKEY
+            VALUE: AuditTrailArchiveKEY
+            
+            Each supported Applications will be issued 1 Application-Level AuditTrail Archive for each Site
+            
+            !!Throws Exception on Error!! 
+            Possible Exception Code:
+                UNKNOWN_SYSTEMCODE
+            </summary>
+            <param name="SystemCode"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
